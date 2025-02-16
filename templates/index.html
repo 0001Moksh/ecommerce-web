@@ -7,10 +7,21 @@
   </title>
   <script src="https://cdn.tailwindcss.com">
   </script>
-  <link rel="icon" type="image/svg+xml" href="static/logo.png" />
+  <link rel="icon" type="image/svg+xml" href="static/logo2.png" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
   <style>
+    .video-background {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }   
+    .product-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+        
     body {
              font-family: 'Roboto', sans-serif;
          }
@@ -30,103 +41,227 @@
   html {
       scroll-behavior: smooth;
   }
+  .fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.fade-out {
+    animation: fadeOut 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+}
 
   </style>
  </head>
  <body class="bg-gray-100">
   <!-- Navigation Bar -->
-  <nav class="bg-white shadow-lg">
-   <div class="max-w-6xl mx-auto px-4">
+  <nav class="fixed top-0 left-0 w-full bg-white shadow-lg">
+   <div class="container mx-auto flex justify-between items-center max-w-6xl px-4">
     <div class="flex justify-between">
      <div class="flex space-x-7">
       <div>
        <a class="flex items-center py-4 px-2" href="#">
-        <img alt="Company logo, a stylized shopping cart" class="h-8 w-8 mr-2"src="static/logo.png"/>
-        <span class="font-semibold text-gray-500 text-lg">
+        <img alt="Company logo, a stylized shopping cart" class="h-8 w-8 mr-2"src="static/logo1.jpg"/>
+        <span class="font-semibold text-gray-600 text-lg">
           Twinkle Tots
         </span>
        </a>
       </div>
       <div class="hidden md:flex items-center space-x-1">
-       <a class="py-4 px-2 text-blue-500 border-b-4 border-blue-500 font-semibold" href="#Home">
+       <a class="py-4 px-2 text-gray-500 hover:border-b-4 border-blue-500 font-semibold hover:text-blue-500 transition duration-500" href="#Home">
         Home
        </a>
-       <a class="py-4 px-2 text-gray-500 font-semibold hover:text-blue-500 transition duration-300" href="#About">
+       <a class="py-4 px-2 text-gray-500 hover:border-b-4 border-blue-500 font-semibold hover:text-blue-500 transition duration-300" href="#About">
         About
        </a>
-       <a class="py-4 px-2 text-gray-500 font-semibold hover:text-blue-500 transition duration-300" href="#Contact">
+       <a class="py-4 px-2 text-gray-500 hover:border-b-4 border-blue-500 font-semibold hover:text-blue-500 transition duration-300" href="#Contact">
         Contact
+       </a>
+       <a class="py-4 px-2 text-gray-500 hover:border-b-4 border-blue-500 font-semibold hover:text-blue-500 transition duration-300" href="#Trend">
+        Trending Products
        </a>
       </div>
      </div>
-     <div class="hidden md:flex items-center space-x-3">
-      <a class="py-2 px-2 font-medium text-gray-500 rounded hover:bg-gray-200 transition duration-300" href="#">
-       Log In
-      </a>
-      <a class="py-2 px-2 font-medium text-white bg-blue-500 rounded hover:bg-blue-400 transition duration-300" href="#">
-       Sign Up
-      </a>
-     </div>
+
+     <!--Sign IN UP-->
+     <div class="absolute top-4 right-4 space-x-4">
+        <button onclick="toggleForm('signIn')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+            <i class="fas fa-sign-in-alt mr-2"></i> Sign In
+        </button>
+        <button onclick="toggleForm('signUp')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75">
+            <i class="fas fa-sign-out-alt mr-2"></i> Sign Up
+        </button>
+    </div>
+
+    <!--Form for sign in and sign up-->
+    <div id="signinModal" tabindex="-1" aria-labelledby="signinModalLabel" aria-hidden="true" class="mt-20 mb-10 bg-white p-6 rounded shadow-lg w-full max-w-sm hidden fixed inset-0 m-auto z-50 fade-out">
+        <button onclick="closeForm()" data-bs-dismiss="modal" aria-label="Close" class="absolute top-5 right-5 text-gray-500 hover:text-gray-700 focus:outline-none">
+            <i class="fas fa-times"></i>
+        </button>
+        <h2 id="signinModalLabel" class="text-2xl font-bold mb-4">Sign In</h2>
+        <form action="/signin" method="post">
+            <div class="mb-4">
+                <label for="signinUsername" class="block text-gray-700">Username</label>
+                <input type="text" id="signinUsername" name="signinUsername" class="w-full px-3 py-2 border rounded" required>
+            </div>
+            <div class="mb-4">
+                <label for="signinPassword" class="block text-gray-700">Password</label>
+                <input type="password" id="signinPassword" name="signinPassword"class="w-full px-3 py-2 border rounded" required>
+            </div>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">Submit</button>
+        </form>
+    </div>
+
+
+    <div id="signupModal" tabindex='-1' aria-labelledby="signupModelLabel" aria-hidden='true' class="mt-14 bg-white p-6 rounded shadow-md w-full max-w-sm hidden fixed inset-0 m-auto z-50 fade-out">
+        <button onclick="closeForm()" data-bs-dismiss="model" aria-label="Close" class="absolute top-5 right-5 text-gray-500 hover:text-gray-700 focus:outline-none">
+            <i class="fas fa-times"></i>
+        </button>
+        <h2 id = "signupModalLabel" class="text-2xl font-bold mb-4">Sign Up</h2>
+        <form action="/signup" method="post">
+            <div class="mb-4">
+                <label for="username" class="block text-gray-700">Username</label>
+                <input type="text" id="username" name="username" class="w-full px-3 py-2 border rounded" required>
+            </div>
+            <div class="mb-4">
+                <label for="email" class="block text-gray-700">Email</label>
+                <input type="email" id="email" name="email" class="w-full px-3 py-2 border rounded" required>
+            </div>
+            <div class="mb-4">
+                <label for="password" class="block text-gray-700">Password</label>
+                <input type="password" id="password" name="password" class="w-full px-3 py-2 border rounded" required>
+            </div>
+            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75">Submit</button>
+        </form>
+    </div>
+
+
+    
+
+
      <div class="md:hidden flex items-center">
-      <button class="outline-none mobile-menu-button">
-       <i class="fas fa-bars">
-       </i>
-      </button>
+        <button id="menu-toggle" class="pl-2 outline-none mobile-menu-button">
+            <i class="fas fa-bars">
+            </i>
+        </button>
      </div>
     </div>
    </div>
-   <div class="hidden mobile-menu">
-    <ul class="">
-     <li>
-      <a class="block text-sm px-2 py-4 text-white bg-blue-500 font-semibold" href="#Home">
-       Home
-      </a>
-     </li>
-     <li>
-      <a class="block text-sm px-2 py-4 hover:bg-blue-500 transition duration-300" href="#About">
-       About
-      </a>
-     </li>
-     <li>
-      <a class="block text-sm px-2 py-4 hover:bg-blue-500 transition duration-300" href="#Contact">
-       Contact
-      </a>
-     </li>
+   <div id="sidebar" class="fixed top-0 left-0 w-44 h-full bg-orange-50 text-black transform -translate-x-full transition-transform duration-300 p-4">
+    <button id="close-menu" class="text-black text-2xl ml-32 mb-2">&times;</button>
+    <ul class="space-y-1">
+        <li><a href="#Home" class="block p-2 hover:text-gray-700">Home</a></li>
+        <li><a href="#Contact" class="block p-2 hover:text-gray-700">Contact</a></li>
+        <li><a href="#About" class="block p-2 hover:text-gray-700">About</a></li>
+        <li><a href="#Trend" class="block p-2 hover:text-gray-700">Trending Product</a></li>
     </ul>
-   </div>
+</div>
   </nav>
+  <script>
+    const menuToggle = document.getElementById("menu-toggle");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+    const closeMenu = document.getElementById("close-menu");
 
-  <!--video section-->
-  <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <video class="video-background" autoplay loop muted>
-          <source src="static/v.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      </div>
+    menuToggle.addEventListener("click", function() {
+        sidebar.classList.remove("-translate-x-full");
+        overlay.classList.add("opacity-50", "visible");
+    });
+
+    closeMenu.addEventListener("click", function() {
+        sidebar.classList.add("-translate-x-full");
+        overlay.classList.remove("opacity-50", "visible");
+    });
+
+    // Close menu when clicking outside the sidebar
+    overlay.addEventListener("click", function() {
+        sidebar.classList.add("-translate-x-full");
+        overlay.classList.remove("opacity-50", "visible");
+    });
+</script>
+
+
+
+
+<!--video section-->
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <video class="video-background mt-16" autoplay loop muted>
+        <source src="static/v.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
     </div>
   </div>
-
+</div>
 
   <!-- Hero Section -->
-  <div id="Home" class=" fade-in-up bg-white">
+  <div id="Home" class="bg-white shadow-lg  fade-in-up">
    <div class="max-w-6xl mx-auto px-4 py-16 text-center">
-    <h1 class="text-4xl font-bold text-gray-800">
-     Welcome to E-Shop
+       <h1 class="text-4xl font-bold text-gray-800">
+           Welcome to E-Shop
     </h1> 
     <p class="mt-4 text-gray-600">
      Find the best products at unbeatable prices
     </p>
     <a href='main' class="mt-8 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400 transition duration-300">
-      Shop Now
+        Shop Now
     </a>
-  </div>
+</div>
 </div>
 
+{% if username %}
+
+<p>
+ Hello {{username}} 
+</p>
+
+{% endif %}
+
+<!--About Section-->
+<section id ="About" class="mt-10 fade-in-up container mx-auto px-4 py-8">
+  <h2 class="text-3xl font-bold text-gray-800 mb-6">
+      About Us
+  </h2>
+  <div class="flex flex-col md:flex-row items-center">
+   <img alt="Image of a modern office space with stylish furniture" class="shadow-lg w-full md:w-1/2 h-64 object-cover rounded mb-4 md:mb-0 md:mr-4" src="static/about.png" width="600"/>
+   <div class="md:w-1/2">
+    <p class="text-gray-600 mb-4">
+      Welcome to Twinkle Tots, your number one source for all things electronics. We're dedicated to bringing you the best gadgets and tech accessories, with a focus on reliability, customer satisfaction, and unique offerings.
+    </p>
+    <p class="text-gray-600">
+        Today, Twinkle Tots serves customers across the world and continues to grow, staying committed to innovation and customer satisfaction. We take pride in offering high-quality products that enhance your lifestyle.
+    </p>
+    <p class="text-gray-600">
+        We hope you love our products as much as we love offering them. If you have any questions or feedback, please feel free to reach out to us. Your support means everything!
+    </p>
+</div>
+</div>
+</section>
+
 <!--Contact-->
-<section id = "Contact" class="py-12">
- <div class="fade-in-up container mx-auto px-4">
+<section id = "Contact" class="mt-10 bg-white shadow-[0_10px_50px_rgba(0,0,0,0.5)] py-12 ">
+    <div class="fade-in-up container mx-auto px-4">
      <div class="text-center mb-8">
          <h2 class="text-3xl font-bold text-gray-800">Contact Us</h2>
          <p class="text-gray-600">Follow us on our social media platforms</p>
@@ -150,120 +285,33 @@
      </div>
  </div>
 </section>
-<!--About Section-->
-<section id ="About" class="fade-in-up container mx-auto px-4 py-8">
-  <h2 class="text-3xl font-bold text-gray-800 mb-6">
-   About Us
-  </h2>
-  <div class="flex flex-col md:flex-row items-center">
-   <img alt="Image of a modern office space with stylish furniture" class="w-full md:w-1/2 h-64 object-cover rounded mb-4 md:mb-0 md:mr-4" src="static/about.png" width="600"/>
-   <div class="md:w-1/2">
-    <p class="text-gray-600 mb-4">
-      Welcome to Twinkle Tots, your number one source for all things electronics. We're dedicated to bringing you the best gadgets and tech accessories, with a focus on reliability, customer satisfaction, and unique offerings.
-    </p>
-    <p class="text-gray-600">
-      Today, Twinkle Tots serves customers across the world and continues to grow, staying committed to innovation and customer satisfaction. We take pride in offering high-quality products that enhance your lifestyle.
-    </p>
-    <p class="text-gray-600">
-      We hope you love our products as much as we love offering them. If you have any questions or feedback, please feel free to reach out to us. Your support means everything!
-    </p>
-   </div>
-  </div>
- </section>
 
 
-
-
-  <!-- Product Listings -->
-  <div class="fade-in-up max-w-6xl mx-auto px-4 py-16">
+  <!-- Trending recommendations -->
+  <div id="Trend" class="fade-in-up max-w-6xl mx-auto px-4 py-16">
    <h2 class="text-2xl font-bold text-gray-800 mb-8">
-    Featured Products
+    Trending Products
    </h2>
    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    {% for index, product in trending_products.iterrows() %}
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-     <img alt="Product image, a stylish modern chair" class="w-full h-48 object-cover" height="300" src="https://storage.googleapis.com/a1aa/image/_MR5uYwvf7YHsnagMrfFHoTxYPgziw_6zecp1z3jNhM.jpg" width="300"/>
+     <img alt="{{product["Name"]}}" class="w-full h-48 object-cover" height="300" src="{{random_product_image_urls[index] }}" width="300"/>
      <div class="p-4">
       <h3 class="text-lg font-semibold text-gray-800">
-       Modern Chair
+       {{truncate(product["Name"],20)}}
+      </h3>
+      <h3 class="text-lg font-semibold text-gray-800">
+       Brand: {{product["Brand"]}}
       </h3>
       <p class="text-gray-600 mt-2">
        $120.00
       </p>
-      <a class="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400 transition duration-300" href="#">
-       Add to Cart
+      <a type="button" data-toggle="model" data-target="#productModal{{index}}" class="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400 transition duration-300" href="#">
+       Buy Now
       </a>
      </div>
     </div>
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-     <img alt="Product image, a sleek modern desk lamp" class="w-full h-48 object-cover" height="300" src="https://storage.googleapis.com/a1aa/image/jFg__Tb2XlywkI7oDDZ_XNXgqSYAptcXPXzz-nJEqwE.jpg" width="300"/>
-     <div class="p-4">
-      <h3 class="text-lg font-semibold text-gray-800">
-       Desk Lamp
-      </h3>
-      <p class="text-gray-600 mt-2">
-       $45.00
-      </p>
-      <a class="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400 transition duration-300" href="#">
-       Add to Cart
-      </a>
-     </div>
-    </div>
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-     <img alt="Product image, a pair of wireless headphones" class="w-full h-48 object-cover" height="300" src="https://storage.googleapis.com/a1aa/image/glxmxfzqdWmAtKt7gkPIpJtvowC0OG-nxdSyo9RxY6E.jpg" width="300"/>
-     <div class="p-4">
-      <h3 class="text-lg font-semibold text-gray-800">
-       Wireless Headphones
-      </h3>
-      <p class="text-gray-600 mt-2">
-       $85.00
-      </p>
-      <a class="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400 transition duration-300" href="#">
-       Add to Cart
-      </a>
-     </div>
-    </div>
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-     <img alt="Product image, a minimalist wristwatch" class="w-full h-48 object-cover" height="300" src="https://storage.googleapis.com/a1aa/image/ENz8LtVN4nhdQZmYPeEqkphfrZFGWQDwRw-EId5WBm4.jpg" width="300"/>
-     <div class="p-4">
-      <h3 class="text-lg font-semibold text-gray-800">
-       Minimalist Watch
-      </h3>
-      <p class="text-gray-600 mt-2">
-       $150.00
-      </p>
-      <a class="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400 transition duration-300" href="#">
-       Add to Cart
-      </a>
-     </div>
-    </div>
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-     <img alt="Product image, a set of kitchen knives" class="w-full h-48 object-cover" height="300" src="https://storage.googleapis.com/a1aa/image/6TyXKTPWl1fhhx7kFUjuiPrj4jZFku0exQQCzpNeGrw.jpg" width="300"/>
-     <div class="p-4">
-      <h3 class="text-lg font-semibold text-gray-800">
-       Kitchen Knives
-      </h3>
-      <p class="text-gray-600 mt-2">
-       $75.00
-      </p>
-      <a class="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400 transition duration-300" href="#">
-       Add to Cart
-      </a>
-     </div>
-    </div>
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-     <img alt="Product image, a pair of running shoes" class="w-full h-48 object-cover" height="300" src="https://storage.googleapis.com/a1aa/image/0tngOYVgh0TxbN6woP0os3QlAiFO4GLOULSzUSy9QJs.jpg" width="300"/>
-     <div class="p-4">
-      <h3 class="text-lg font-semibold text-gray-800">
-       Running Shoes
-      </h3>
-      <p class="text-gray-600 mt-2">
-       $95.00
-      </p>
-      <a class="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400 transition duration-300" href="#">
-       Add to Cart
-      </a>
-     </div>
-    </div>
+    {% endfor %}
    </div>
   </div>
   <!-- Footer -->
@@ -306,23 +354,27 @@
                         <a href="#" class="text-white hover:text-gray-400"><i class="fab fa-instagram"></i></a>
                         <a href="#" class="text-white hover:text-gray-400"><i class="fab fa-linkedin-in"></i></a>
                     </div>
+                    <a class="flex items-center py-4 " href="#">
+                        <span class="font-semibold text-white text-lg">
+                            Twinkle Tots
+                        </span>
+                            <img alt="Company logo, a stylized shopping cart" class="h-8 w-8 mr-2"src="static/logo2.png"/>
+                       </a>
                 </div>
             </div>
             <div class="mt-8 border-t border-gray-700 pt-4 text-center text-sm fade-in-up">
-                <p>&copy; 2023 E-commerce Platform. All rights reserved.</p>
+                <p>&copy; 2025 E-commerce Platform. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script>
-      document.getElementById('menu-button').addEventListener('click', function() {
-          var menu = document.getElementById('mobile-menu');
-          if (menu.classList.contains('hidden')) {
-              menu.classList.remove('hidden');
-          } else {
-              menu.classList.add('hidden');
-          }
-      });
+        const mobileMenuButton = document.querySelector(".mobile-menu-button");
+const mobileMenu = document.querySelector(".mobile-menu");
+
+mobileMenuButton.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+});
 
       // Smooth scroll to section with animation
       document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -337,6 +389,37 @@
   </script>
 
   <script>
+
+    function toggleForm(formType) {
+        const signinModal = document.getElementById('signinModal');
+        const signupModal = document.getElementById('signupModal');
+        if (formType === 'signIn') {
+            signinModal.classList.remove('hidden', 'fade-out');
+            signinModal.classList.add('fade-in');
+            signupModal.classList.add('hidden');
+        } else if (formType === 'signUp') {
+            signupModal.classList.remove('hidden', 'fade-out');
+            signupModal.classList.add('fade-in');
+            signinModal.classList.add('hidden');
+        }
+    }
+
+    function closeForm() {
+        const signinModal = document.getElementById('signinModal');
+        const signupModal = document.getElementById('signupModal');
+        if (!signinModal.classList.contains('hidden')) {
+            signinModal.classList.remove('fade-in');
+            signinModal.classList.add('fade-out');
+            setTimeout(() => signinModal.classList.add('hidden'), 500);
+        }
+        if (!signupModal.classList.contains('hidden')) {
+            signupModal.classList.remove('fade-in');
+            signupModal.classList.add('fade-out');
+            setTimeout(() => signupModal.classList.add('hidden'), 500);
+        }
+    }
+
+
    const btn = document.querySelector("button.mobile-menu-button");
         const menu = document.querySelector(".mobile-menu");
 
