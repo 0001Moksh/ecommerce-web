@@ -119,6 +119,15 @@ def signin():
                                )
 
 
+@app.route('/recommendations', methods=['POST'])
+def recommendations():
+    if request.method == 'POST':
+        prod = request.form.get('prod')
+        nbr = int(request.form.get('nbr'))
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
