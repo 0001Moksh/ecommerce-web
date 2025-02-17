@@ -2,12 +2,10 @@ from flask import Flask, request, render_template
 import pandas as pd
 import random
 from flask_sqlalchemy import SQLAlchemy
-
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 app = Flask(__name__)
-
-
-
 # database configuration---------------------------------------
 app.secret_key = "alskdjfwoeieiurlskdjfslkdjf"
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:@localhost/ecom"
@@ -27,10 +25,24 @@ class Signin(db.Model):
     username = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
 
+# function for recommendations
 
 
 
-
+def content_based_recommendations(train_data, item_name, top_n=10):
+    if item_name not in train_data['Name'].values:
+        print(f"Item '{item_name}' not found in the training data.")
+        return pd.DataFrame()
+    tfidf_vectorizer = TfidfVectorizer(stop_words='english')
+    tfidf_matrix_content = tfidf_vectorizer.fit_transform(train_data['Tags'])
+    cosine_similarities_content = cosine_similarity(tfidf_matrix_content, tfidf_matrix_content)
+    item_index = train_data[train_data['Name'] == item_name].index[0]
+    similar_items = list(enumerate(cosine_similarities_content[item_index]))
+    similar_items = sorted(similar_items, key=lambda x: x[1], reverse=True)
+    top_similar_items = similar_items[1:top_n+1]
+    recommended_item_indices = [x[0] for x in top_similar_items]
+    recommended_items_details = train_data.iloc[recommended_item_indices][['Name','Price' ,'ReviewCount', 'Brand', 'ImageURL', 'Rating']]
+    return recommended_items_details
 
 # Load CSV files
 try:
@@ -119,14 +131,23 @@ def signin():
                                )
 
 
-@app.route('/recommendations', methods=['POST'])
+@app.route('/recommendations', methods=['POST','GET'])
 def recommendations():
     if request.method == 'POST':
         prod = request.form.get('prod')
-        nbr = int(request.form.get('nbr'))
+        # prod = request.form.get('OPI Infinite Shine, Nail Lacquer Nail Polish, Bubble Bath')
+        content_based_record = content_based_recommendations(train_data,prod)
 
-
-
+        if content_based_record.empty:
+            message = "No Recommendation avaible for this product."
+            return render_template('main.html', message = message)
+        else:
+            random_product_image_urls = [random.choice(random_image_urls) for _ in range(len(trending_products))]
+            price = [40, 50, 60, 70, 100, 122, 106, 50, 30, 50]
+            print(content_based_record, random_product_image_urls)
+            return render_template('main.html',content_based_record=content_based_record,
+                                   random_product_image_urls=random_product_image_urls,
+                                   random_price=random.choice(price))
 
 
 if __name__ == '__main__':

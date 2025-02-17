@@ -11,6 +11,24 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
   <style>
+    /* Hide text on small screens (mobile) */
+    .sign-text {
+      display: inline;
+    }
+  
+    /* On mobile, hide the text */
+    @media (max-width: 767px) {
+      .sign-text {
+        display: none;
+      }
+    }
+  
+    /* On larger screens (laptop and above), show the text */
+    @media (min-width: 768px) {
+      .sign-text {
+        display: inline;
+      }
+    }
     #bg-video {
         position: absolute;
         top: 12%;
@@ -110,10 +128,10 @@
      <!--Sign IN UP-->
      <div class="absolute top-4 right-4 space-x-4">
         <button onclick="toggleForm('signIn')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-            <i class="fas fa-sign-in-alt mr-2"></i> Sign In
+            <i class="sign-text fas fa-sign-in-alt mr-2"></i> Sign In
         </button>
         <button onclick="toggleForm('signUp')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75">
-            <i class="fas fa-sign-out-alt mr-2"></i> Sign Up
+            <i class="sign-text fas fa-sign-out-alt mr-2"></i> Sign Up
         </button>
     </div>
 
